@@ -1,7 +1,4 @@
 steps:
-- name: gcr.io/cloud-builders/gcloud
-  entrypoint: 'bash'
-  args: [ '-c', "gcloud secrets versions access latest --secret=${_SECRETS_ENV} > .env" ]
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/${_SECRETS_ENV}', '.']
 # Sube la imagen de Docker al registro de contenedores de GCP
