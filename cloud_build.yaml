@@ -1,9 +1,6 @@
 steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/${_CLOUD_RUN_NAME}', '.']
-# Sube la imagen de Docker al registro de contenedores de GCP
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/${_PROJECT_ID}/${_CLOUD_RUN_NAME}']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['build', 'submit', '--tag', 'gcr.io/${_PROJECT_ID}/${_CLOUD_RUN_NAME}', '.']
 
 - id: deploy-to-cloud-run
   name: 'gcr.io/cloud-builders/gcloud'
