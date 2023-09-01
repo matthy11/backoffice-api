@@ -1,9 +1,9 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/${_SECRETS_ENV}', '.']
+  args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/${_CLOUD_RUN_NAME}', '.']
 # Sube la imagen de Docker al registro de contenedores de GCP
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/${_PROJECT_ID}/${_SECRETS_ENV}']
+  args: ['push', 'gcr.io/${_PROJECT_ID}/${_CLOUD_RUN_NAME}']
 
 - id: deploy-to-cloud-run
   name: 'gcr.io/cloud-builders/gcloud'
@@ -11,9 +11,9 @@ steps:
     - 'beta'
     - 'run'
     - 'deploy'
-    - 'demo-cloud-build'
+    - '${_CLOUD_RUN_NAME}'
     - '--image'
-    - 'gcr.io/${_PROJECT_ID}/{_SECRETS_ENV}'
+    - 'gcr.io/${_PROJECT_ID}/${_CLOUD_RUN_NAME}'
     - '--region'
     - 'us-central1'
     - '--platform'
@@ -30,7 +30,7 @@ steps:
 
 images:
   # Especifica la imagen de Docker que se construirá y se subirá al registro de contenedores de GCP
-  - 'gcr.io/${_PROJECT_ID}/${_SECRETS_ENV}'
+  - 'gcr.io/${_PROJECT_ID}/${_CLOUD_RUN_NAME}'
 ##
 
 options: 
