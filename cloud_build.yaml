@@ -1,6 +1,6 @@
 steps:
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['build', 'submit', '--tag', 'gcr.io/${_PROJECT_ID}/${_CLOUD_RUN_NAME}', '.']
+  args: ['build', 'submit', '--tag', 'gcr.io/${_PROJECT_ID}/${_CLOUD_RUN_NAME}']
 
 - id: deploy-to-cloud-run
   name: 'gcr.io/cloud-builders/gcloud'
