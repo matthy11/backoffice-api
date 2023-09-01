@@ -1,17 +1,43 @@
 steps:
-- name: node
-  entrypoint: npm
-  args: ['install']
-- name: 'node'
-  entrypoint: npm
-  args: ['run', "predeploy:${_GIT_BRANCH}"]
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: 'bash'
   args: [ '-c', "gcloud secrets versions access latest --secret=${_SECRETS_ENV} > .env" ]
-- name: node
-  entrypoint: npm
-  args: ['run', "build"]
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: 'bash'
-  args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy --no-promote', '[deployment/app.yaml]']
-timeout: '1600s'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/${_PROJECT_ID}/${_SECRETS_ENV}', '.']
+# Sube la imagen de Docker al registro de contenedores de GCP
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/${_PROJECT_ID}/${_SECRETS_ENV}']
+
+- id: deploy-to-cloud-run
+  name: 'gcr.io/cloud-builders/gcloud'
+  args:
+    - 'beta'
+    - 'run'
+    - 'deploy'
+    - 'demo-cloud-build'
+    - '--image'
+    - 'gcr.io/${_PROJECT_ID}/{_SECRETS_ENV}'
+    - '--region'
+    - 'us-central1'
+    - '--platform'
+    - 'managed'
+    - '--allow-unauthenticated'
+    - '--memory'
+    - '512Mi'
+    - '--concurrency'
+    - '80'
+    - '--port'
+    - '5000'
+    - '--timeout'
+    - '300s'
+
+images:
+  # Especifica la imagen de Docker que se construirá y se subirá al registro de contenedores de GCP
+  - 'gcr.io/${_PROJECT_ID}/${_SECRETS_ENV}'
+##
+
+options: 
+  logging: CLOUD_LOGGING_ONLY
+#  substitution_option: 'ALLOW_LOOSE'
+
+
