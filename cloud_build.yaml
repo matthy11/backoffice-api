@@ -1,0 +1,17 @@
+steps:
+- name: node
+  entrypoint: npm
+  args: ['install']
+- name: 'node'
+  entrypoint: npm
+  args: ['run', "predeploy:${_GIT_BRANCH}"]
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: 'bash'
+  args: [ '-c', "gcloud secrets versions access latest --secret=${_SECRETS_ENV} > .env" ]
+- name: node
+  entrypoint: npm
+  args: ['run', "build"]
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'bash'
+  args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy --no-promote', '[deployment/app.yaml]']
+timeout: '1600s'
