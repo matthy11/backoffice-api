@@ -63,7 +63,7 @@ La estructura del repositorio sigue un enfoque modular, facilitando el mantenimi
 <details>
   <summary>Ver Estructura de Carpetas</summary>
 
-```
+```plaintext
 ├── .gitignore
 ├── Dockerfile
 ├── README.md
