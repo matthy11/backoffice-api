@@ -250,3 +250,5 @@ Este proyecto está bajo la Licencia ISC. Consulta el archivo `LICENSE` (si exis
     *   Se usaron bloques de código con resaltado de sintaxis (`bash`, `dotenv`) para comandos e información de configuración.
     *   Se mejoró la tipografía y el uso de emojis para mayor atractivo.
 11. **Correcciones Generales**: Se corrigió el encabezado principal, se añadió una descripción coherente y se estructuró todo el contenido de manera lógica y fácil de seguir.
+
+```
